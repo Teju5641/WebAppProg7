@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reflex Timer Game</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            font-size: 16px;
+        }
+
+        #countdown {
+            font-size: 24px;
+            margin: 15px 0;
+        }
+
+        #target {
+            font-size: 20px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Lakshmi Tejaswini Davuluri reflexes</h1>
+
+    <div id="target">Your time</div>
+
+    <div id="countdown">Count</div>
+
+    <button onclick="beginTime()">Go</button>
+
+    <button onclick="recordTime()">Halt</button>
+
+    <script>
+        let haltTime = undefined;
+
+        function recordTime() {
+            haltTime = Date.now();
+            console.log(haltTime);
+        }
+
+        function beginTime() {
+            haltTime = undefined;
+
+            for (let i = 0; i <= 5; i++) {
+                setTimeout(function() {
+                    document.getElementById("countdown").innerHTML = i;
+                }, (5 - i) * 1000);
+            }
+
+            setTimeout(function() {
+                if (haltTime === undefined) {
+                    document.getElementById("target").innerHTML =
+                        "Not soon enough";
+                }
+                else {
+                    let targetTime = Date.now();
+                    let elapsedTime = targetTime - haltTime;
+
+                    document.getElementById("target").innerHTML =
+                        "Time was " + elapsedTime + " milliseconds";
+                }
+            }, 5000);
+        }
+    </script>
+
+</body>
+</html>

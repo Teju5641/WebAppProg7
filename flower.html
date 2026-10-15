@@ -40,9 +40,9 @@
 
     <p id="score">Score is zero.</p>
 
-    <p onclick="help()" style="cursor: pointer;">
-        Click for help.
-    </p>
+   <p>
+    <a href="#" onclick="help(); return false;">Click for help</a>
+    </p>    
 
     <p id="help">Help report</p>
 
@@ -147,6 +147,7 @@
                     image.src = "images/poisonivy.jpg";
                     score -= 4;
                     gameOver = true;
+                    alert("Game Over! You found poison ivy!");
                     scoredLocations.push(position);
                 }
                 else if (position === roseLocation) {
@@ -186,7 +187,6 @@
                 (lastLocation + 30) % 36
             ];
 
-            // Check for daisies first
             for (let location of neighbors) {
                 if (daisyLocations.includes(location)) {
                     result = "cold";
