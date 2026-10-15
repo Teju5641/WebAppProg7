@@ -40,9 +40,9 @@
 
     <p id="score">Score is zero.</p>
 
-   <p>
-    <a href="#" onclick="help(); return false;">Click for help</a>
-    </p>    
+    <p>
+        <a href="#" onclick="help(); return false;">Click for help</a>
+    </p>
 
     <p id="help">Help report</p>
 
@@ -123,14 +123,50 @@
         let score = 0;
         let locationsVisited = 0;
         let lastLocation = 0;
-
-        let poisonLocation = 19;
-        let roseLocation = 14;
-        let lilyLocations = [3, 25];
-        let daisyLocations = [2, 5, 11, 20, 21];
-
         let gameOver = false;
         let scoredLocations = [];
+
+        let positions = [];
+
+        for (let i = 0; i < 36; i++) {
+            positions.push(i);
+        }
+
+        for (let i = positions.length - 1; i > 0; i--) {
+            let randomIndex = Math.floor(Math.random() * (i + 1));
+
+            let temp = positions[i];
+            positions[i] = positions[randomIndex];
+            positions[randomIndex] = temp;
+        }
+
+        let poisonLocation = positions[0];
+        let roseLocation = positions[1];
+        let lilyLocations = [positions[2], positions[3]];
+        let daisyLocations = positions.slice(4, 9);
+
+      
+        function moveRose() {
+            let row = Math.floor(roseLocation / 6);
+            let col = roseLocation % 6;
+
+            let moves = [];
+
+            if (row > 0) moves.push(roseLocation - 6);
+            if (row < 5) moves.push(roseLocation + 6);
+            if (col > 0) moves.push(roseLocation - 1);
+            if (col < 5) moves.push(roseLocation + 1);
+
+            let randomIndex = Math.floor(Math.random() * moves.length);
+            roseLocation = moves[randomIndex];
+
+            if (roseLocation === lastLocation) {
+                gameOver = true;
+                return true;
+            }
+
+            return false;
+        }
 
       
         function check(position) {
@@ -138,16 +174,13 @@
                 return;
             }
 
-            let id = ids[position];
-            let image = document.getElementById(id);
+            let image = document.getElementById(ids[position]);
 
-         
             if (!scoredLocations.includes(position)) {
                 if (position === poisonLocation) {
                     image.src = "images/poisonivy.jpg";
                     score -= 4;
                     gameOver = true;
-                    alert("Game Over! You found poison ivy!");
                     scoredLocations.push(position);
                 }
                 else if (position === roseLocation) {
@@ -175,8 +208,18 @@
 
             document.getElementById("score").innerHTML =
                 "Score is " + score + ".";
+
+            if (gameOver) {
+                alert("Game Over! You found poison ivy!");
+                return;
+            }
+
+            if (moveRose()) {
+                alert("Game Over! The rose landed on you!");
+            }
         }
 
+        
         function help() {
             let result = "warm";
 
@@ -197,7 +240,6 @@
 
             let row = Math.floor(lastLocation / 6);
             let col = lastLocation % 6;
-
             let nearby = [];
 
             for (let r = row - 1; r <= row + 1; r++) {

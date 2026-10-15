@@ -40,8 +40,9 @@
     <input type="text" id="inputText" placeholder="Enter text">
 
     <button onclick="addEnd()">Add end</button>
-    <button onclick="addFront()">Add front</button>
-    <button onclick="removeEveryOther()">Remove</button>
+	<button onclick="addFront()">Add front</button>
+	<button onclick="removeEveryOther()">Remove</button>
+	<button onclick="shuffle()">Shuffle</button>
 
     <div class="flex-container" id="container">
         <div class="divlist">Item 1</div>
@@ -76,18 +77,39 @@
             container.insertBefore(newDiv, container.firstChild);
         }
 
-        function removeEveryOther() {
-            let divListItems = document.getElementsByClassName("divlist");
+        
+		function removeEveryOther() {
+			let divListItems = document.getElementsByClassName("divlist");
 
-            let length = divListItems.length;
+			let length = divListItems.length;
 
-            for (let i = length - 1; i >= 0; i--) {
-                if (i % 2 === 0) {
-                    divListItems[i].remove();
-                }
-            }
-        }
-    </script>
+			for (let i = length - 1; i >= 0; i--) {
+				if (i % 2 === 0) {
+					divListItems[i].remove();
+				}
+			}
+		}
+
+		function shuffle() {
+			let items = document.getElementsByClassName("divlist");
+
+			if (items.length < 2) {
+				return;
+			}
+
+			let first = Math.floor(Math.random() * items.length);
+			let second = Math.floor(Math.random() * items.length);
+
+			while (first === second) {
+				second = Math.floor(Math.random() * items.length);
+			}
+
+			let temp = items[first].innerHTML;
+			items[first].innerHTML = items[second].innerHTML;
+			items[second].innerHTML = temp;
+		}
+		</script>
+
 
 </body>
 </html>
